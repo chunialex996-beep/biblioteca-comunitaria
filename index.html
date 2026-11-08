@@ -9,6 +9,133 @@
 
 <body>
 
+    <header>
+        <h1>Biblioteca Comunitaria</h1>
+        <p>Control de libros y prestamos</p>
+
+        <nav>
+            <a href="#catalogo">Catalogo</a>
+            <a href="#prestamos">Prestamos y devoluciones</a>
+        </nav>
+    </header>
+
+    <main>
+        <section id="catalogo">
+            <h2>Catálogo de libros</h2>
+            <p>Desde este apartado podras ver los libros que se encuentran en la biblioteca</p>
+
+            <button type="button" id="btn-registrar-libro">Registrar libro</button>
+
+            <div class="resumen-catalogo">
+                <div class="contador">
+                    <p>Ejemplares registrados</p>
+                    <span id="total-ejemplares">6</span>
+                </div>
+                <div class="contador">
+                    <p>Disponibles</p>
+                    <span id="total-disponibles">4</span>
+                </div>
+                <div class="contador">
+                    <p>Prestados</p>
+                    <span id="total-prestados">2</span>
+                </div>
+            </div>
+
+            <div class="buscador-catalogo">
+                <label for="buscar-libro">Buscar libro</label>
+                <input type="search" id="buscar-libro" placeholder="Escribe el título o el autor">
+                <button type="button" id="btn-buscar">Buscar</button>
+            </div>
+
+            <div class="filtro-catalogo">
+                <label for="filtro-disponibilidad">Disponibilidad</label>
+                <select name="disponibilidad" id="filtro-disponibilidad">
+                    <option value="todos">Todos los ejemplares</option>
+                    <option value="disponible">Disponibles</option>
+                    <option value="prestado">Prestados</option>
+                </select>
+            </div>
+
+            <table id="tabla-catalogo">
+                <caption>Ejemplares de la biblioteca</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">Código</th>
+                        <th scope="col">Titulo</th>
+                        <th scope="col">Autor</th>
+                        <th scope="col">Categoria</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">Acción</th>
+                    </tr>
+                </thead>
+
+                <tbody id="cuerpo-catalogo">
+                    <tr>
+                        <td>LIB-001</td>
+                        <td>El principito</td>
+                        <td>Antoine de Saint-Exupéry</td>
+                        <td>Literatura</td>
+                        <td>Disponible</td>
+                        <td>
+                            <button type="button" class="btn-prestar">Prestar</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>LIB-004</td>
+                        <td>El principito</td>
+                        <td>Antoine de Saint-Exupéry</td>
+                        <td>Literatura</td>
+                        <td>Prestado</td>
+                        <td>
+                            <button type="button" class="btn-prestar" disabled>No disponible</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <section id="prestamos">
+            <h2>Prestamos y devoluciones</h2>
+            <p>Desde este apartado puedes consultar prestamos y registrar devoluciones</p>
+        </section>
+    </main>
+
+    <dialog id="dialogo-registrar-libro" open>
+
+        <h2>Registrar libro</h2>
+
+        <form id="form-registrar-libro">
+
+            <div class="campo-formulario">
+                <label for="titulo-libro">Titulo del libro</label>
+                <input type="text" id="titulo-libro" name="titulo" required>
+            </div>
+
+            <div class="campo-formulario">
+                <label for="autor-libro">Autor</label>
+                <input type="text" id="autor-libro" name="autor" required>
+            </div>
+
+            <div class="campo-formulario">
+                <label for="categoria-libro">Categoria</label>
+                <select name="categoria" id="categoria-libro" required>
+                    <option value="">Selecciona una categoria</option>
+                    <option value="literatura">Literatura</option>
+                    <option value="historia">Historia</option>
+                    <option value="ciencias">Ciencias</option>
+                    <option value="educacion">Educación</option>
+                </select>
+            </div>
+
+            <p>El código del ejemplar se asignará automaticamente al guardar</p>
+
+            <div class="acciones-formulario">
+                <button type="button" id="btn-cancelar-libro">Cancelar</button>
+                <button type="submit" id="btn-guardar-libro">Guardar libro</button>
+            </div>
+
+        </form>
+    </dialog>
+
 </body>
 
 </html>
