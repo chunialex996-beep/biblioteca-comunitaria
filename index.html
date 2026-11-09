@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Biblioteca-Comunitaria</title>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
@@ -20,7 +21,9 @@
     </header>
 
     <main>
+
         <section id="catalogo">
+
             <h2>Catálogo de libros</h2>
             <p>Desde este apartado podras ver los libros que se encuentran en la biblioteca</p>
 
@@ -29,11 +32,11 @@
             <div class="resumen-catalogo">
                 <div class="contador">
                     <p>Ejemplares registrados</p>
-                    <span id="total-ejemplares">6</span>
+                    <span id="total-ejemplares">3</span>
                 </div>
                 <div class="contador">
                     <p>Disponibles</p>
-                    <span id="total-disponibles">4</span>
+                    <span id="total-disponibles">1</span>
                 </div>
                 <div class="contador">
                     <p>Prestados</p>
@@ -70,6 +73,7 @@
                 </thead>
 
                 <tbody id="cuerpo-catalogo">
+
                     <tr>
                         <td>LIB-001</td>
                         <td>El principito</td>
@@ -77,9 +81,10 @@
                         <td>Literatura</td>
                         <td>Disponible</td>
                         <td>
-                            <button type="button" class="btn-prestar">Prestar</button>
+                            <button type="button" class="btn-prestar" data-libro-id="LIB-001">Prestar</button>
                         </td>
                     </tr>
+
                     <tr>
                         <td>LIB-004</td>
                         <td>El principito</td>
@@ -87,19 +92,145 @@
                         <td>Literatura</td>
                         <td>Prestado</td>
                         <td>
-                            <button type="button" class="btn-prestar" disabled>No disponible</button>
+                            <button type="button" class="btn-prestar" data-libro-id="LIB-004" disabled>No
+                                disponible</button>
                         </td>
                     </tr>
+
+                    <tr>
+                        <td>LIB-003</td>
+                        <td>Matemática básica</td>
+                        <td>Laura Méndez</td>
+                        <td>Educación</td>
+                        <td>Prestado</td>
+                        <td>
+                            <button type="button" class="btn-prestar" data-libro-id="LIB-003" disabled>No
+                                disponible</button>
+                        </td>
+                    </tr>
+
                 </tbody>
             </table>
+
         </section>
+
         <section id="prestamos">
+
             <h2>Prestamos y devoluciones</h2>
             <p>Desde este apartado puedes consultar prestamos y registrar devoluciones</p>
+
+            <div class="resumen-prestamos">
+
+                <div class="contador">
+
+                    <p>Préstamos activos</p>
+                    <span id="total-prestamos-activos">2</span>
+
+
+                </div>
+
+                <div class="contador">
+
+                    <p>Vencidos</p>
+                    <span id="total-prestamos-vencidos">1</span>
+
+                </div>
+
+                <div class="contador">
+
+                    <p>Devueltos</p>
+                    <span id="total-prestamos-devueltos">1</span>
+
+                </div>
+
+            </div>
+
+            <div class="buscador-prestamos">
+
+                <label for="buscar-prestamo">Buscar préstamos</label>
+                <input type="search" id="buscar-prestamo" placeholder="Nombre, titulo o codigo">
+                <button type="button" id="btn-buscar-prestamo">Buscar</button>
+
+            </div>
+
+            <div class="filtro-prestamos">
+
+                <label for="filtro-estado-prestamo">Estado del préstamo</label>
+                <select name="estadoPrestamo" id="filtro-estado-prestamo">
+
+                    <option value="todos">Todos los prestamos</option>
+                    <option value="activo">Activos</option>
+                    <option value="vencido">Vencidos</option>
+                    <option value="devuelto">Devueltos</option>
+
+                </select>
+
+            </div>
+
+            <table id="tabla-prestamos">
+
+                <caption>Registro de préstamos</caption>
+
+                <thead>
+
+                    <tr>
+                        <th scope="col">Código</th>
+                        <th scope="col">Titulo</th>
+                        <th scope="col">Solicitante</th>
+                        <th scope="col">Devolucion prevista</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">Acción</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="cuerpo-prestamos">
+
+                    <tr>
+                        <td>LIB-004</td>
+                        <td>El principito</td>
+                        <td>Ana Morales</td>
+                        <td>15/11/2026</td>
+                        <td>Activo</td>
+                        <td>
+                            <button type="button" class="btn-devolver" data-prestamo-id="PRE-001">Registrar
+                                devolución</button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>LIB-001</td>
+                        <td>El principito</td>
+                        <td>Luis García</td>
+                        <td>07/11/2026</td>
+                        <td>Devuelto</td>
+                        <td>
+                            <button type="button" class="btn-devolver" data-prestamo-id="PRE-002" disabled>Ya
+                                devuelto</button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>LIB-003</td>
+                        <td>Matemática básica</td>
+                        <td>Pedro Ramírez</td>
+                        <td>06/11/2026</td>
+                        <td>Vencido</td>
+                        <td> <button type="button" class="btn-devolver" data-prestamo-id="PRE-003">Registrar
+                                devolución
+                            </button>
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
         </section>
+
     </main>
 
-    <dialog id="dialogo-registrar-libro" open>
+    <dialog id="dialogo-registrar-libro">
 
         <h2>Registrar libro</h2>
 
@@ -134,7 +265,66 @@
             </div>
 
         </form>
+
     </dialog>
+
+    <dialog id="dialogo-registrar-prestamo">
+
+        <h2>Registrar préstamo</h2>
+
+        <form id="form-registrar-prestamo">
+
+            <div class="campo-formulario">
+
+                <label for="prestamo-codigo">codigo del ejemplar</label>
+                <input type="text" id="prestamo-codigo" name="codigo" value="LIB-001" readonly>
+
+            </div>
+
+            <div class="campo-formulario">
+
+                <label for="prestamo-libro">Titulo del libro</label>
+                <input type="text" id="prestamo-libro" name="titulo" value="El principito" readonly>
+
+            </div>
+
+            <div class="campo-formulario">
+
+                <label for="prestamo-solicitante">Nombre del solicitante</label>
+                <input type="text" name="solicitante" id="prestamo-solicitante" required>
+
+            </div>
+
+            <div class="campo-formulario">
+
+                <label for="prestamo-fecha-devolucion">Fecha prevista de devolución</label>
+                <input type="date" name="fechaDevolucion" id="prestamo-fecha-devolucion" required>
+
+            </div>
+
+            <div class="acciones-formulario">
+                <button type="button" id="btn-cancelar-prestamo">Cancelar</button>
+                <button type="submit" id="btn-confirmar-prestamo">Confirmar préstamo</button>
+            </div>
+
+        </form>
+
+    </dialog>
+
+    <dialog id="dialogo-confirmar-devolucion">
+
+        <h2>Confirmar devolución</h2>
+        <p>¿Confirmás que recibiste este ejemplar?</p>
+        <p id="detalle-devolucion">LIB-004 - El principito</p>
+
+        <div class="acciones-formulario">
+            <button type="button" id="btn-cancelar-devolucion">Cancelar</button>
+            <button type="button" id="btn-confirmar-devolucion">Confirmar devolución</button>
+        </div>
+
+    </dialog>
+
+    <script src="js/script.js"></script>
 
 </body>
 
