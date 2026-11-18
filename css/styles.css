@@ -1,309 +1,385 @@
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 body {
-    margin: 0;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-    background: #f4f4f4;
-    color: #222;
+  margin: 0;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
+  color: #222;
 }
 
 main {
-    max-width: 1000px;
-    margin: 0 auto;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
-h1, h2 {
-    margin: 0;
+h1,
+h2 {
+  margin: 0;
 }
 
 button {
-    padding: 8px 14px;
-    border: 2px solid #222;
-    border-radius: 6px;
-    background: white;
-    font-size: 14px;
-    cursor: pointer;
+  padding: 8px 14px;
+  border: 2px solid #222;
+  border-radius: 6px;
+  background: white;
+  font-size: 14px;
+  cursor: pointer;
 }
 
-input, select {
-    padding: 8px;
-    border: 2px solid #222;
-    border-radius: 6px;
-    font-size: 14px;
-    background: white;
+input,
+select {
+  padding: 8px;
+  border: 2px solid #222;
+  border-radius: 6px;
+  font-size: 14px;
+  background: white;
 }
 
 header {
-    max-width: 1000px;
-    margin: 0 auto 20px;
-    padding: 12px 16px;
-    background: white;
-    border: 2px solid #222;
-    border-radius: 12px;
-    display: grid;
-    grid-template-columns: 1fr auto;
-    align-items: center;
+  max-width: 1000px;
+  margin: 0 auto 20px;
+  padding: 12px 16px;
+  background: white;
+  border: 2px solid #222;
+  border-radius: 12px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
 }
 
 header h1 {
-    font-size: 20px;
+  font-size: 20px;
 }
 
 header p {
-    margin: 2px 0 0;
-    font-size: 13px;
+  margin: 2px 0 0;
+  font-size: 13px;
 }
 
 header nav {
-    grid-column: 2;
-    grid-row: 1 / span 2;
-    display: flex;
-    gap: 10px;
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  display: flex;
+  gap: 10px;
 }
 
 header nav a {
-    padding: 8px 14px;
-    border: 2px solid #222;
-    border-radius: 6px;
-    background: white;
-    color: #222;
-    text-decoration: none;
-    font-size: 14px;
+  padding: 8px 14px;
+  border: 2px solid #222;
+  border-radius: 6px;
+  background: white;
+  color: #222;
+  text-decoration: none;
+  font-size: 14px;
 }
 
-header nav a:first-child,
-header nav a:hover {
-    background: #3fbf4f;
-    color: white;
-    border-color: #2a8f37;
+header nav a:hover,
+header nav a:focus-visible {
+  background: #3fbf4f;
+  color: white;
+  border-color: #2a8f37;
 }
 
 main section {
-    display: grid;
-    grid-template-columns: 1fr 260px;
-    gap: 16px;
-    align-items: end;
-    margin-bottom: 40px;
-    padding: 20px;
-    background: white;
-    border: 2px solid #222;
-    border-radius: 12px;
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  gap: 16px;
+  align-items: end;
+  margin-bottom: 40px;
+  padding: 20px;
+  background: white;
+  border: 2px solid #222;
+  border-radius: 12px;
 }
 
 main section > * {
-    grid-column: 1 / -1;
+  grid-column: 1 / -1;
 }
 
 main section h2 {
-    font-size: 26px;
+  font-size: 26px;
 }
 
 main section > p {
-    margin: 0;
-    font-size: 14px;
+  margin: 0;
+  font-size: 14px;
 }
 
 #btn-registrar-libro {
-    grid-column: 2;
-    justify-self: end;
-    background: #3fbf4f;
-    border-color: #2a8f37;
-    color: white;
+  grid-column: 2;
+  justify-self: end;
+  background: #3fbf4f;
+  border-color: #2a8f37;
+  color: white;
 }
-
 
 .resumen-catalogo,
 .resumen-prestamos {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
 }
 
 .contador {
-    display: flex;
-    flex-direction: row-reverse;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    padding: 24px 12px;
-    background: #e3f5e5;
-    border: 2px solid #222;
-    border-radius: 16px;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 24px 12px;
+  background: #e3f5e5;
+  border: 2px solid #222;
+  border-radius: 16px;
 }
 
 .contador p {
-    margin: 0;
-    font-size: 16px;
+  margin: 0;
+  font-size: 16px;
 }
 
 .contador span {
-    padding: 4px 10px;
-    border: 2px solid #222;
-    border-radius: 4px;
-    font-size: 24px;
-    background: white;
+  padding: 4px 10px;
+  border: 2px solid #222;
+  border-radius: 4px;
+  font-size: 24px;
+  background: white;
 }
 
 /*Buscador y filtro*/
 main section > .buscador-catalogo,
 main section > .buscador-prestamos {
-    grid-column: 1;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
+  grid-column: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 main section > .filtro-catalogo,
 main section > .filtro-prestamos {
-    grid-column: 2;
+  grid-column: 2;
 }
 
 .buscador-catalogo label,
 .buscador-prestamos label {
-    width: 100%;
-    font-size: 13px;
+  width: 100%;
+  font-size: 13px;
 }
 
 .buscador-catalogo input,
 .buscador-prestamos input {
-    flex: 1;
+  flex: 1;
 }
 
 .buscador-catalogo button,
 .buscador-prestamos button {
-    background: #3fbf4f;
-    border-color: #2a8f37;
-    color: white;
+  background: #3fbf4f;
+  border-color: #2a8f37;
+  color: white;
 }
 
 .filtro-catalogo label,
 .filtro-prestamos label {
-    display: block;
-    margin-bottom: 4px;
-    font-size: 13px;
+  display: block;
+  margin-bottom: 4px;
+  font-size: 13px;
 }
 
 .filtro-catalogo select,
 .filtro-prestamos select {
-    width: 100%;
+  width: 100%;
 }
 
 table {
-    width: 100%;
-    border-collapse: collapse;
-    border: 2px solid #222;
-    border-radius: 8px;
+  width: 100%;
+  border-collapse: collapse;
+  border: 2px solid #222;
+  border-radius: 8px;
 }
 
 caption {
-    text-align: left;
-    padding-bottom: 6px;
-    font-size: 13px;
+  text-align: left;
+  padding-bottom: 6px;
+  font-size: 13px;
 }
 
-th, td {
-    padding: 12px 10px;
-    text-align: left;
-    font-size: 14px;
-    border-bottom: 1px solid #ccc;
+th,
+td {
+  padding: 12px 10px;
+  text-align: left;
+  font-size: 14px;
+  border-bottom: 1px solid #ccc;
 }
 
 th {
-    background: #f0f0f0;
+  background: #f0f0f0;
 }
 
 /* Estadocolumna 5*/
 td:nth-child(5) {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .btn-prestar,
 .btn-devolver {
-    background: white;
+  background: white;
 }
 
 .btn-prestar:disabled,
 .btn-devolver:disabled {
-    background: #eee;
-    color: #999;
-    border-color: #ccc;
-    cursor: not-allowed;
+  background: #eee;
+  color: #999;
+  border-color: #ccc;
+  cursor: not-allowed;
 }
 
-.disponible, .devuelto {
-    color: #1e7a2b;
+.disponible,
+.devuelto {
+  color: #1e7a2b;
 }
 
-.prestado, .activo {
-    color: #9a7a00;
+.prestado,
+.activo {
+  color: #9a7a00;
 }
 
 .vencido {
-    color: #c62828;
+  color: #c62828;
 }
 
 dialog {
-    width: 90%;
-    max-width: 460px;
-    padding: 24px;
-    border: 2px solid #222;
-    border-radius: 12px;
-    background: #eef1f5;
+  width: 90%;
+  max-width: 460px;
+  padding: 24px;
+  border: 2px solid #222;
+  border-radius: 12px;
+  background: #eef1f5;
 }
 
 dialog::backdrop {
-    background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.5);
 }
 
 dialog h2 {
-    margin-bottom: 16px;
-    font-size: 22px;
+  margin-bottom: 16px;
+  font-size: 22px;
 }
 
 .campo-formulario {
-    margin-bottom: 14px;
+  margin-bottom: 14px;
 }
 
 .campo-formulario label {
-    display: block;
-    margin-bottom: 4px;
-    font-size: 14px;
+  display: block;
+  margin-bottom: 4px;
+  font-size: 14px;
 }
 
 .campo-formulario input,
 .campo-formulario select {
-    width: 100%;
+  width: 100%;
 }
 
 .campo-formulario input[readonly] {
-    background: #ddd;
+  background: #ddd;
 }
 
 dialog p {
-    font-size: 14px;
+  font-size: 14px;
 }
 
 .acciones-formulario {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
 }
 
 #btn-cancelar-libro,
 #btn-cancelar-prestamo,
 #btn-cancelar-devolucion {
-    background: #e53935;
-    border-color: #b71c1c;
-    color: white;
+  background: #e53935;
+  border-color: #b71c1c;
+  color: white;
 }
 
 #btn-guardar-libro,
 #btn-confirmar-prestamo,
 #btn-confirmar-devolucion {
-    background: #3fbf4f;
-    border-color: #2a8f37;
-    color: white;
+  background: #3fbf4f;
+  border-color: #2a8f37;
+  color: white;
+}
+
+.contenedor-tabla {
+  width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+}
+
+.contenedor-tabla table {
+  min-width: 700px;
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 12px;
+  }
+
+  header {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  header nav {
+    grid-column: 1;
+    grid-row: auto;
+    flex-wrap: wrap;
+  }
+
+  main section {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 14px;
+  }
+
+  .resumen-catalogo,
+  .resumen-prestamos {
+    grid-template-columns: 1fr;
+  }
+
+  main section > .buscador-catalogo,
+  main section > .buscador-prestamos,
+  main section > .filtro-catalogo,
+  main section > .filtro-prestamos {
+    grid-column: 1 / -1;
+  }
+
+  #btn-registrar-libro {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+
+  dialog {
+    width: 95%;
+    padding: 16px;
+  }
+
+  .acciones-formulario {
+    flex-direction: column;
+  }
+
+  .acciones-formulario button {
+    width: 100%;
+  }
+}
+
+dialog {
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.acciones-formulario {
+  gap: 12px;
+  flex-wrap: wrap;
 }

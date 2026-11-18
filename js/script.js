@@ -246,7 +246,7 @@ function actualizarVistaCatalogo() {
       <td>${libro.titulo}</td>
       <td>${libro.autor}</td>
       <td>${libro.categoria}</td>
-      <td>${libro.estado}</td>
+      <td class="${libro.estado.toLowerCase()}">${libro.estado}</td>
       <td>
         <button type="button" class="btn-prestar" ${libro.estado === "Prestado" ? "disabled" : ""}>
           ${libro.estado === "Prestado" ? "No disponible" : "Prestar"}
@@ -301,7 +301,7 @@ function actualizarVistaPrestamos() {
       <td>${prestamo.titulo}</td>
       <td>${prestamo.solicitante}</td>
       <td>${prestamo.fecha}</td>
-      <td>${prestamo.estado}</td>
+      <td class="${prestamo.estado.toLowerCase()}">${prestamo.estado}</td>
       <td>
         <button type="button" class="btn-devolver" ${prestamo.estado === "Devuelto" ? "disabled" : ""}>
           ${prestamo.estado === "Devuelto" ? "Ya devuelto" : "Registrar devolución"}
