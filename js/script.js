@@ -1,6 +1,6 @@
 // 1. INICIALIZACIÓN Y PERSISTENCIA (LOCALSTORAGE)
 
-let biblioteca = JSON.parse(localStorage.getItem("biblioteca")) || [
+let biblioteca = [
   {
     codigo: "LIB-001",
     titulo: "El principito",
@@ -24,7 +24,7 @@ let biblioteca = JSON.parse(localStorage.getItem("biblioteca")) || [
   },
 ];
 
-let prestamos = JSON.parse(localStorage.getItem("prestamos")) || [
+let prestamos = [
   {
     codigo: "LIB-004",
     titulo: "El principito",
@@ -56,9 +56,90 @@ function guardarDatos() {
   localStorage.setItem("prestamos", JSON.stringify(prestamos));
 }
 
+function obtenerFechaHoy() {
+  const hoy = new Date();
+
+  const anio = hoy.getFullYear();
+  const mes = String(hoy.getMonth() + 1).padStart(2, "0");
+  const dia = String(hoy.getDate()).padStart(2, "0");
+
+  return `${anio}-${mes}-${dia}`;
+}
+
+function actualizarVencimientos() {
+  const hoy = obtenerFechaHoy();
+  let huboCambios = false;
+
+  prestamos.forEach((prestamo) => {
+    if (prestamo.estado !== "Devuelto") {
+      const estadoCorrecto = prestamo.fecha < hoy ? "Vencido" : "Activo";
+
+      if (prestamo.estado !== estadoCorrecto) {
+        prestamo.estado = estadoCorrecto;
+        huboCambios = true;
+      }
+    }
+  });
+
+  if (huboCambios) {
+    guardarDatos();
+  }
+}
+
+function leerListaGuardada(clave, datosIniciales, campos) {
+  const contenido = localStorage.getItem(clave);
+
+  if (contenido === null) {
+    return datosIniciales;
+  }
+
+  const lista = JSON.parse(contenido);
+
+  const estructuraValida =
+    Array.isArray(lista) &&
+    lista.every(
+      (registro) =>
+        registro &&
+        campos.every((campo) => typeof registro[campo] === "string"),
+    );
+
+  if (!estructuraValida) {
+    throw new Error(`Los datos de "${clave}" tienen un formato incorrecto.`);
+  }
+
+  return lista;
+}
+
 // 2. FUNCIONALIDAD DE LOS DIÁLOGOS (MODALES) Y EVENTOS
 
 document.addEventListener("DOMContentLoaded", () => {
+  try {
+    biblioteca = leerListaGuardada("biblioteca", biblioteca, [
+      "codigo",
+      "titulo",
+      "autor",
+      "categoria",
+      "estado",
+    ]);
+
+    prestamos = leerListaGuardada("prestamos", prestamos, [
+      "codigo",
+      "titulo",
+      "solicitante",
+      "fecha",
+      "estado",
+    ]);
+  } catch (error) {
+    console.error(error);
+
+    document.querySelector("main").textContent =
+      "No se pudieron cargar los datos guardados. " +
+      "Las operaciones están detenidas para conservarlos. " +
+      "No se borró ni sobrescribió la información.";
+
+    return;
+  }
+
   // --- REGISTRAR LIBRO ---
   const dialogoLibro = document.getElementById("dialogo-registrar-libro");
   const btnRegistrarLibro = document.getElementById("btn-registrar-libro");
@@ -81,11 +162,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Generar código que no se repita
     let numero = biblioteca.length + 1;
-    let nuevoCodigo = `LIB-00${numero}`;
+    let nuevoCodigo = `LIB-${String(numero).padStart(3, "0")}`;
 
     while (biblioteca.some((libro) => libro.codigo === nuevoCodigo)) {
       numero++;
-      nuevoCodigo = `LIB-00${numero}`;
+      nuevoCodigo = `LIB-${String(numero).padStart(3, "0")}`;
     }
 
     biblioteca.push({
@@ -121,6 +202,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!solicitante || !fecha) {
       alert("Completá el nombre del solicitante y la fecha de devolución.");
+      return;
+    }
+
+    if (fecha < obtenerFechaHoy()) {
+      alert("La fecha de devolución no puede ser anterior a hoy.");
       return;
     }
 
@@ -192,6 +278,23 @@ document.addEventListener("DOMContentLoaded", () => {
   btnBuscar.addEventListener("click", () => actualizarVistaCatalogo());
   inputBuscarLibro.addEventListener("input", () => actualizarVistaCatalogo());
 
+  const filtroDisponibilidad = document.getElementById("filtro-disponibilidad");
+
+  filtroDisponibilidad.addEventListener("change", actualizarVistaCatalogo);
+
+  const inputBuscarPrestamo = document.getElementById("buscar-prestamo");
+
+  const btnBuscarPrestamo = document.getElementById("btn-buscar-prestamo");
+
+  inputBuscarPrestamo.addEventListener("input", actualizarVistaPrestamos);
+  btnBuscarPrestamo.addEventListener("click", actualizarVistaPrestamos);
+
+  const filtroEstadoPrestamo = document.getElementById(
+    "filtro-estado-prestamo",
+  );
+
+  filtroEstadoPrestamo.addEventListener("change", actualizarVistaPrestamos);
+
   // Mostrar tablas al cargar la página
   actualizarVistaCatalogo();
   actualizarVistaPrestamos();
@@ -219,20 +322,28 @@ function actualizarVistaCatalogo() {
   // Filtrar libros por título o autor
   const textoBusqueda = document
     .getElementById("buscar-libro")
-    .value.toLowerCase();
+    .value.trim()
+    .toLowerCase();
+
+  const disponibilidad = document.getElementById("filtro-disponibilidad").value;
 
   const librosFiltrados = biblioteca.filter((libro) => {
-    return (
+    const coincideTexto =
       libro.titulo.toLowerCase().includes(textoBusqueda) ||
-      libro.autor.toLowerCase().includes(textoBusqueda)
-    );
+      libro.autor.toLowerCase().includes(textoBusqueda);
+
+    const coincideEstado =
+      disponibilidad === "todos" ||
+      libro.estado.toLowerCase() === disponibilidad;
+
+    return coincideTexto && coincideEstado;
   });
 
   // Mostrar mensaje si no hay resultados
   if (librosFiltrados.length === 0) {
     cuerpoCatalogo.innerHTML = `
       <tr>
-        <td colspan="6">No se encontraron libros con ese título o autor.</td>
+        <td colspan="6">No se encontraron libros con los criterios seleccionados.</td>
       </tr>
     `;
     return;
@@ -241,21 +352,32 @@ function actualizarVistaCatalogo() {
   // Dibujar filas del catálogo
   librosFiltrados.forEach((libro) => {
     const tr = document.createElement("tr");
+
     tr.innerHTML = `
-      <td>${libro.codigo}</td>
-      <td>${libro.titulo}</td>
-      <td>${libro.autor}</td>
-      <td>${libro.categoria}</td>
-      <td class="${libro.estado.toLowerCase()}">${libro.estado}</td>
-      <td>
-        <button type="button" class="btn-prestar" ${libro.estado === "Prestado" ? "disabled" : ""}>
-          ${libro.estado === "Prestado" ? "No disponible" : "Prestar"}
-        </button>
-      </td>
-    `;
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td>
+    <button type="button" class="btn-prestar"></button>
+  </td>
+`;
+
+    const celdas = tr.querySelectorAll("td");
+
+    celdas[0].textContent = libro.codigo;
+    celdas[1].textContent = libro.titulo;
+    celdas[2].textContent = libro.autor;
+    celdas[3].textContent = libro.categoria;
+    celdas[4].textContent = libro.estado;
+    celdas[4].className = libro.estado.toLowerCase();
 
     // Evento del botón Prestar de esta fila
     const btnPrestar = tr.querySelector(".btn-prestar");
+    btnPrestar.disabled = libro.estado !== "Disponible";
+
+    btnPrestar.textContent = btnPrestar.disabled ? "No disponible" : "Prestar";
     btnPrestar.addEventListener("click", () => {
       document.getElementById("prestamo-codigo").value = libro.codigo;
       document.getElementById("prestamo-libro").value = libro.titulo;
@@ -267,6 +389,8 @@ function actualizarVistaCatalogo() {
 }
 
 function actualizarVistaPrestamos() {
+  actualizarVencimientos(); // Actualizar estados antes de mostrar
+
   const cuerpoPrestamos = document.getElementById("cuerpo-prestamos");
   cuerpoPrestamos.innerHTML = "";
 
@@ -293,24 +417,75 @@ function actualizarVistaPrestamos() {
   document.getElementById("total-prestamos-vencidos").textContent = vencidos;
   document.getElementById("total-prestamos-devueltos").textContent = devueltos;
 
+  const textoBusqueda = document
+    .getElementById("buscar-prestamo")
+    .value.trim()
+    .toLowerCase();
+
+  const estadoSeleccionado = document.getElementById(
+    "filtro-estado-prestamo",
+  ).value;
+
+  const prestamosFiltrados = prestamos.filter((prestamo) => {
+    const coincideTexto =
+      prestamo.solicitante.toLowerCase().includes(textoBusqueda) ||
+      prestamo.titulo.toLowerCase().includes(textoBusqueda) ||
+      prestamo.codigo.toLowerCase().includes(textoBusqueda);
+
+    let coincideEstado = false;
+
+    if (estadoSeleccionado === "todos") {
+      coincideEstado = true;
+    } else if (estadoSeleccionado === "activo") {
+      coincideEstado =
+        prestamo.estado === "Activo" || prestamo.estado === "Vencido";
+    } else {
+      coincideEstado = prestamo.estado.toLowerCase() === estadoSeleccionado;
+    }
+
+    return coincideTexto && coincideEstado;
+  });
+
+  if (prestamosFiltrados.length === 0) {
+    cuerpoPrestamos.innerHTML = `
+    <tr>
+      <td colspan="6">No se encontraron préstamos con esos criterios.</td>
+    </tr>
+  `;
+    return;
+  }
+
   // Dibujar filas de préstamos
-  prestamos.forEach((prestamo) => {
+  prestamosFiltrados.forEach((prestamo) => {
     const tr = document.createElement("tr");
+
     tr.innerHTML = `
-      <td>${prestamo.codigo}</td>
-      <td>${prestamo.titulo}</td>
-      <td>${prestamo.solicitante}</td>
-      <td>${prestamo.fecha}</td>
-      <td class="${prestamo.estado.toLowerCase()}">${prestamo.estado}</td>
-      <td>
-        <button type="button" class="btn-devolver" ${prestamo.estado === "Devuelto" ? "disabled" : ""}>
-          ${prestamo.estado === "Devuelto" ? "Ya devuelto" : "Registrar devolución"}
-        </button>
-      </td>
-    `;
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td>
+    <button type="button" class="btn-devolver"></button>
+  </td>
+`;
+
+    const celdas = tr.querySelectorAll("td");
+
+    celdas[0].textContent = prestamo.codigo;
+    celdas[1].textContent = prestamo.titulo;
+    celdas[2].textContent = prestamo.solicitante;
+    celdas[3].textContent = prestamo.fecha;
+    celdas[4].textContent = prestamo.estado;
+    celdas[4].className = prestamo.estado.toLowerCase();
 
     // Evento del botón Registrar devolución de esta fila
     const btnDevolver = tr.querySelector(".btn-devolver");
+    btnDevolver.disabled = prestamo.estado === "Devuelto";
+
+    btnDevolver.textContent = btnDevolver.disabled
+      ? "Ya devuelto"
+      : "Registrar devolución";
     btnDevolver.addEventListener("click", () => {
       prestamoSeleccionado = prestamo;
       document.getElementById("detalle-devolucion").textContent =
